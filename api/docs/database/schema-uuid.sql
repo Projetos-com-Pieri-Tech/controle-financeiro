@@ -10,7 +10,7 @@ USE luis9046_controle_financeiro;
 -- TABELA: roles
 -- ========================================
 CREATE TABLE roles (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id CHAR(36) PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -22,7 +22,7 @@ CREATE TABLE roles (
 -- TABELA: users
 -- ========================================
 CREATE TABLE users (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id CHAR(36) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE users (
 -- TABELA: accounts
 -- ========================================
 CREATE TABLE accounts (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id CHAR(36) PRIMARY KEY,
     user_id CHAR(36) NOT NULL,
     name VARCHAR(100) NOT NULL,
     type ENUM('conta_corrente', 'poupanca', 'cartao_credito', 'dinheiro', 'investimento') NOT NULL,
@@ -57,9 +57,10 @@ CREATE TABLE accounts (
 -- TABELA: categories
 -- ========================================
 CREATE TABLE categories (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id CHAR(36) PRIMARY KEY,
     user_id CHAR(36) NULL, -- NULL = categoria global
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
@@ -72,7 +73,7 @@ CREATE TABLE categories (
 -- TABELA: transactions
 -- ========================================
 CREATE TABLE transactions (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id CHAR(36) PRIMARY KEY,
     user_id CHAR(36) NOT NULL,
     account_id CHAR(36) NOT NULL,
     category_id CHAR(36) NULL,
