@@ -1,6 +1,6 @@
 import { Account } from '../../domain/entities/account';
 import { AccountRepository } from '../../domain/ports/AccountRepository';
-import { GetAccountBalance } from '../../domain/usecases/GetAccountBalance';
+import { GetAccountBalance } from '../../domain/usecases/account/GetAccountBalance';
 import { TransactionRepository } from '../../domain/ports/TransactionRepository';
 
 export class AccountService {
@@ -14,7 +14,7 @@ export class AccountService {
   }
 
   async createAccount(
-    userId: number,
+    userId: string, // UUID
     name: string,
     type: string,
     initialBalance: number = 0
@@ -30,18 +30,18 @@ export class AccountService {
     return account;
   }
 
-  async getUserAccounts(userId: number): Promise<Account[]> {
+  async getUserAccounts(userId: string): Promise<Account[]> { // UUID
     return await this.accountRepository.findByUserId(userId);
   }
 
-  async getAccountWithBalance(userId: number, accountId: number) {
+  async getAccountWithBalance(userId: string, accountId: string) { // UUID
     const balance = await this.getAccountBalance.execute(userId, accountId);
     return balance;
   }
 
   async updateAccount(
-    userId: number,
-    accountId: number,
+    userId: string, // UUID
+    accountId: string, // UUID
     data: Partial<Account>
   ): Promise<Account | null> {
     // Verificar se a conta pertence ao usuário
@@ -53,7 +53,7 @@ export class AccountService {
     return await this.accountRepository.update(accountId, data);
   }
 
-  async deleteAccount(userId: number, accountId: number): Promise<boolean> {
+  async deleteAccount(userId: string, accountId: string): Promise<boolean> { // UUID
     // Verificar se a conta pertence ao usuário
     const account = await this.accountRepository.findById(accountId);
     if (!account || account.userId !== userId) {

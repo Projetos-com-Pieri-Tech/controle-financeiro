@@ -1,10 +1,6 @@
 import { Role } from '../entities/role';
+import { BaseRepository } from './BaseRepository';
 
-export interface RoleRepository {
-  findById(id: number): Promise<Role | null>;
+export interface RoleRepository extends BaseRepository<Role> {
   findByName(name: string): Promise<Role | null>;
-  create(role: Omit<Role, 'id' | 'createdAt' | 'updatedAt'>): Promise<Role>;
-  update(id: number, role: Partial<Role>): Promise<Role | null>;
-  delete(id: number): Promise<boolean>;
-  findAll(): Promise<Role[]>;
 }

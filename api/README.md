@@ -1,6 +1,8 @@
 # API de Controle Financeiro
 
-![License](https://img.shields.io/badge/license-ISC-blue.svg)
+![License](https://img.## 🗃️ Banco de Dados
+
+O sistema utiliza MySQL com uma arquitetura otimizada para performance e escalabilidade:elds.io/badge/license-ISC-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)
 ![TypeScript](https://img.shields.io/badge/typescript-5.0-blue)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
@@ -38,7 +40,7 @@ O projeto segue a **Arquitetura Hexagonal** com as seguintes camadas:
 
 ### Infrastructure Layer
 - **Controllers**: Endpoints da API
-- **Repositories**: Implementação dos repositórios (PostgreSQL)
+- **Repositories**: Implementação dos repositórios (MySQL)
 - **Middleware**: Autenticação, validação, rate limiting
 - **Config**: Configuração do servidor e banco de dados
 
@@ -46,7 +48,7 @@ O projeto segue a **Arquitetura Hexagonal** com as seguintes camadas:
 
 - **Node.js** + **TypeScript**
 - **Express.js** - Framework web
-- **PostgreSQL** - Banco de dados
+- **MySQL** - Banco de dados
 - **JWT** - Autenticação
 - **bcrypt** - Hash de senhas
 - **Joi** - Validação de dados
@@ -76,7 +78,7 @@ O sistema utiliza PostgreSQL com uma arquitetura otimizada para performance e es
 ### Pré-requisitos
 
 - Node.js (v16 ou superior)
-- PostgreSQL (v12 ou superior)
+- MySQL (v8.0 ou superior)
 - npm ou yarn
 
 ### Passo a passo
@@ -104,10 +106,10 @@ cp .env.example .env
 |----------|-----------|--------------|-------------|
 | `PORT` | Porta do servidor | 3001 | Não |
 | `NODE_ENV` | Ambiente de execução | development | Não |
-| `DB_HOST` | Host do PostgreSQL | localhost | Sim |
-| `DB_PORT` | Porta do PostgreSQL | 5432 | Não |
+| `DB_HOST` | Host do MySQL | localhost | Sim |
+| `DB_PORT` | Porta do MySQL | 3306 | Não |
 | `DB_NAME` | Nome do banco | controle_financeiro | Sim |
-| `DB_USER` | Usuário do banco | postgres | Sim |
+| `DB_USER` | Usuário do banco | root | Sim |
 | `DB_PASSWORD` | Senha do banco | - | Sim |
 | `JWT_SECRET` | Chave secreta JWT | - | Sim |
 
@@ -426,7 +428,7 @@ npm run test:watch
 
 ### Performance
 - **Rate Limiting** - Proteção contra spam e DDoS
-- **Connection Pooling** - Pool de conexões PostgreSQL
+- **Connection Pooling** - Pool de conexões MySQL
 - **Middleware otimizado** - Express.js com middlewares essenciais
 - **Compressão** - Resposta gzip (recomendado implementar)
 
@@ -484,7 +486,7 @@ api/
 
 ### Pré-requisitos para Desenvolvimento
 - Node.js v16+
-- PostgreSQL v12+
+- MySQL v8.0+
 - Git
 
 ### Padrões de Código

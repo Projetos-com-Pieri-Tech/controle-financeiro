@@ -4,9 +4,9 @@ import { User } from '../../domain/entities/user';
 import { UserRepository } from '../../domain/ports/UserRepository';
 
 export interface AuthTokenPayload {
-  userId: number;
+  userId: string; // UUID
   email: string;
-  roleId: number;
+  roleId: string; // UUID
 }
 
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     private jwtSecret: string
   ) {}
 
-  async register(name: string, email: string, password: string, roleId: number): Promise<User> {
+  async register(name: string, email: string, password: string, roleId: string): Promise<User> {
     // Verificar se o email já existe
     const existingUser = await this.userRepository.findByEmail(email);
     if (existingUser) {

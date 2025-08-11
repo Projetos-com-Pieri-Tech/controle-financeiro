@@ -1,14 +1,8 @@
-export enum AccountType {
-  CONTA_CORRENTE = 'conta_corrente',
-  POUPANCA = 'poupanca',
-  CARTAO_CREDITO = 'cartao_credito',
-  DINHEIRO = 'dinheiro',
-  INVESTIMENTO = 'investimento'
-}
+import { AccountType } from '../enums';
 
 export interface Account {
-  id: number;
-  userId: number;
+  id: string; // UUID
+  userId: string; // UUID
   name: string;
   type: AccountType;
   initialBalance: number;

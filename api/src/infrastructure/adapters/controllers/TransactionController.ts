@@ -1,13 +1,6 @@
 import { Request, Response } from 'express';
 import { TransactionService } from '../../../application/services/TransactionService';
-
-interface AuthRequest extends Request {
-  user?: {
-    userId: number;
-    email: string;
-    roleId: number;
-  };
-}
+import { AuthRequest, CreateTransactionRequest, UpdateTransactionRequest, TransactionResponse, TransactionFiltersRequest } from '../../../application/dtos';
 
 export class TransactionController {
   constructor(private transactionService: TransactionService) {}
@@ -77,7 +70,7 @@ export class TransactionController {
   async get(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId;
-      const transactionId = parseInt(req.params.id);
+      const transactionId = req.params.id; // UUID string
 
       const transaction = await this.transactionService.getTransaction(userId, transactionId);
       
@@ -95,7 +88,7 @@ export class TransactionController {
   async update(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId;
-      const transactionId = parseInt(req.params.id);
+      const transactionId = req.params.id; // UUID string
       const {
         accountId,
         categoryId,
@@ -135,7 +128,7 @@ export class TransactionController {
   async delete(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId;
-      const transactionId = parseInt(req.params.id);
+      const transactionId = req.params.id; // UUID string
 
       const success = await this.transactionService.delete(userId, transactionId);
       

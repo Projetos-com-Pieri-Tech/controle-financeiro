@@ -1,19 +1,8 @@
-import { Transaction } from '../entities/transaction';
-import { TransactionRepository } from '../ports/TransactionRepository';
-import { AccountRepository } from '../ports/AccountRepository';
-import { CategoryRepository } from '../ports/CategoryRepository';
-
-export interface UpdateTransactionDTO {
-  userId: number;
-  transactionId: number;
-  accountId?: number;
-  categoryId?: number | null;
-  description?: string;
-  amount?: number;
-  type?: string;
-  transactionDate?: Date;
-  isPaid?: boolean;
-}
+import { Transaction } from '../../entities/transaction';
+import { TransactionRepository } from '../../ports/TransactionRepository';
+import { AccountRepository } from '../../ports/AccountRepository';
+import { CategoryRepository } from '../../ports/CategoryRepository';
+import { UpdateTransactionDTO } from '../../../application/dtos/transaction';
 
 export class UpdateTransaction {
   constructor(

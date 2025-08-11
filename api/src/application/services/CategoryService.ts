@@ -4,7 +4,7 @@ import { CategoryRepository } from '../../domain/ports/CategoryRepository';
 export class CategoryService {
   constructor(private categoryRepository: CategoryRepository) {}
 
-  async createCategory(name: string, userId?: number): Promise<Category> {
+  async createCategory(name: string, userId?: string): Promise<Category> { // UUID
     // Verificar se já existe uma categoria com o mesmo nome para o usuário
     const existingCategory = await this.categoryRepository.findByName(name, userId);
     if (existingCategory) {
@@ -20,7 +20,7 @@ export class CategoryService {
     return category;
   }
 
-  async getUserCategories(userId: number): Promise<Category[]> {
+  async getUserCategories(userId: string): Promise<Category[]> { // UUID
     // Buscar categorias do usuário e categorias globais (userId = null)
     const userCategories = await this.categoryRepository.findByUserId(userId);
     const globalCategories = await this.categoryRepository.findByUserId(null);
@@ -29,8 +29,8 @@ export class CategoryService {
   }
 
   async updateCategory(
-    userId: number,
-    categoryId: number,
+    userId: string, // UUID
+    categoryId: string, // UUID
     name: string
   ): Promise<Category | null> {
     // Verificar se a categoria existe e pertence ao usuário
@@ -47,7 +47,7 @@ export class CategoryService {
     return await this.categoryRepository.update(categoryId, { name });
   }
 
-  async deleteCategory(userId: number, categoryId: number): Promise<boolean> {
+  async deleteCategory(userId: string, categoryId: string): Promise<boolean> { // UUID
     // Verificar se a categoria existe e pertence ao usuário
     const category = await this.categoryRepository.findById(categoryId);
     if (!category) {

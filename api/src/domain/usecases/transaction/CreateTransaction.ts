@@ -1,18 +1,9 @@
-import { Transaction, TransactionType } from '../entities/transaction';
-import { TransactionRepository } from '../ports/TransactionRepository';
-import { AccountRepository } from '../ports/AccountRepository';
-import { CategoryRepository } from '../ports/CategoryRepository';
-
-export interface CreateTransactionDTO {
-  userId: number;
-  accountId: number;
-  categoryId?: number;
-  description: string;
-  amount: number;
-  type: TransactionType;
-  transactionDate: Date;
-  isPaid?: boolean;
-}
+import { Transaction } from '../../entities/transaction';
+import { TransactionType } from '../../enums';
+import { TransactionRepository } from '../../ports/TransactionRepository';
+import { AccountRepository } from '../../ports/AccountRepository';
+import { CategoryRepository } from '../../ports/CategoryRepository';
+import { CreateTransactionDTO } from '../../../application/dtos/transaction';
 
 export class CreateTransaction {
   constructor(

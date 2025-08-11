@@ -1,9 +1,9 @@
 export interface User {
-  id: number;
+  id: string; // UUID
   name: string;
   email: string;
   passwordHash: string;
-  roleId: number;
+  roleId: string; // UUID
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;

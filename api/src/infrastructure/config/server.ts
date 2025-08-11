@@ -4,12 +4,17 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import { errorHandler } from '../middleware/errorHandler';
 import { apiRateLimiter } from '../middleware/rateLimiter';
+import { setupSwagger } from './swagger';
+import { createRoutes } from '../routes';
+import { Container } from './container';
 
-export function createServer(): Application {
+export function createServer(container: Container): Application {
   const app = express();
 
   // Middlewares de segurança
-  app.use(helmet());
+  app.use(helmet({
+    contentSecurityPolicy: false // Permitir Swagger UI
+  }));
   app.use(cors());
   
   // Rate limiting geral
@@ -22,8 +27,36 @@ export function createServer(): Application {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   
-  // TODO: Adicionar rotas aqui
-  // app.use('/api', routes);
+  // Configurar Swagger
+  setupSwagger(app);
+  
+  // Health check e API info
+  app.get('/api/health', (req, res) => {
+    res.json({ 
+      status: 'OK', 
+      timestamp: new Date().toISOString(),
+      docs: '/api/docs'
+    });
+  });
+
+  app.get('/api', (req, res) => {
+    res.json({
+      name: 'Controle Financeiro API',
+      version: '1.0.0',
+      description: 'API para controle financeiro pessoal',
+      endpoints: {
+        auth: '/api/auth',
+        accounts: '/api/accounts',
+        transactions: '/api/transactions',
+        categories: '/api/categories',
+        health: '/api/health',
+        docs: '/api/docs'
+      }
+    });
+  });
+  
+  // Configurar rotas da aplicação
+  app.use('/api', createRoutes(container));
   
   // Error handling middleware (deve ser o último)
   app.use(errorHandler);

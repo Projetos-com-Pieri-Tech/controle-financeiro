@@ -1,13 +1,6 @@
 import { Request, Response } from 'express';
 import { AccountService } from '../../../application/services/AccountService';
-
-interface AuthRequest extends Request {
-  user?: {
-    userId: number;
-    email: string;
-    roleId: number;
-  };
-}
+import { AuthRequest, CreateAccountRequest, UpdateAccountRequest, AccountResponse } from '../../../application/dtos';
 
 export class AccountController {
   constructor(private accountService: AccountService) {}
@@ -48,7 +41,7 @@ export class AccountController {
   async getWithBalance(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId;
-      const accountId = parseInt(req.params.id);
+      const accountId = req.params.id; // UUID string
 
       const balance = await this.accountService.getAccountWithBalance(userId, accountId);
       res.json(balance);
@@ -60,7 +53,7 @@ export class AccountController {
   async update(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId;
-      const accountId = parseInt(req.params.id);
+      const accountId = req.params.id; // UUID string
       const { name, type, initialBalance } = req.body;
 
       const account = await this.accountService.updateAccount(
@@ -83,7 +76,7 @@ export class AccountController {
   async delete(req: AuthRequest, res: Response): Promise<void> {
     try {
       const userId = req.user!.userId;
-      const accountId = parseInt(req.params.id);
+      const accountId = req.params.id; // UUID string
 
       const success = await this.accountService.deleteAccount(userId, accountId);
       

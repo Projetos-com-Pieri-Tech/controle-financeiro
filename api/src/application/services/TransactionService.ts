@@ -2,10 +2,11 @@ import { Transaction } from '../../domain/entities/transaction';
 import { TransactionRepository, TransactionFilters } from '../../domain/ports/TransactionRepository';
 import { AccountRepository } from '../../domain/ports/AccountRepository';
 import { CategoryRepository } from '../../domain/ports/CategoryRepository';
-import { CreateTransaction, CreateTransactionDTO } from '../../domain/usecases/CreateTransaction';
-import { UpdateTransaction, UpdateTransactionDTO } from '../../domain/usecases/UpdateTransaction';
-import { DeleteTransaction } from '../../domain/usecases/DeleteTransaction';
-import { GetTransactionsByUser } from '../../domain/usecases/GetTransactionsByUser';
+import { CreateTransaction } from '../../domain/usecases/transaction/CreateTransaction';
+import { UpdateTransaction } from '../../domain/usecases/transaction/UpdateTransaction';
+import { DeleteTransaction } from '../../domain/usecases/transaction/DeleteTransaction';
+import { GetTransactionsByUser } from '../../domain/usecases/transaction/GetTransactionsByUser';
+import { CreateTransactionDTO, UpdateTransactionDTO } from '../dtos';
 
 export class TransactionService {
   private createTransaction: CreateTransaction;
@@ -40,18 +41,18 @@ export class TransactionService {
     return await this.updateTransaction.execute(data);
   }
 
-  async delete(userId: number, transactionId: number): Promise<boolean> {
+  async delete(userId: string, transactionId: string): Promise<boolean> { // UUID
     return await this.deleteTransaction.execute(userId, transactionId);
   }
 
   async getUserTransactions(
-    userId: number,
+    userId: string, // UUID
     filters?: Omit<TransactionFilters, 'userId'>
   ): Promise<Transaction[]> {
     return await this.getTransactionsByUser.execute(userId, filters);
   }
 
-  async getTransaction(userId: number, transactionId: number): Promise<Transaction | null> {
+  async getTransaction(userId: string, transactionId: string): Promise<Transaction | null> { // UUID
     const transaction = await this.transactionRepository.findById(transactionId);
     if (!transaction || transaction.userId !== userId) {
       return null;

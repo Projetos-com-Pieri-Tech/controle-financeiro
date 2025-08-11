@@ -1,13 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../../application/services/AuthService';
-
-interface AuthRequest extends Request {
-  user?: {
-    userId: number;
-    email: string;
-    roleId: number;
-  };
-}
+import { AuthRequest } from '../../application/dtos';
 
 export function createAuthMiddleware(authService: AuthService) {
   return async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {

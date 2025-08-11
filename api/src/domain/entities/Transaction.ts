@@ -1,13 +1,10 @@
-export enum TransactionType {
-  RECEITA = 'receita',
-  DESPESA = 'despesa'
-}
+import { TransactionType } from '../enums';
 
 export interface Transaction {
-  id: number;
-  userId: number;
-  accountId: number;
-  categoryId?: number | null;
+  id: string; // UUID
+  userId: string; // UUID
+  accountId: string; // UUID
+  categoryId?: string | null; // UUID
   description: string;
   amount: number;
   type: TransactionType;

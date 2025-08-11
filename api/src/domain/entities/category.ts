@@ -1,6 +1,6 @@
 export interface Category {
-  id: number;
-  userId?: number | null;
+  id: string; // UUID
+  userId?: string | null; // UUID
   name: string;
   createdAt: Date;
   updatedAt: Date;

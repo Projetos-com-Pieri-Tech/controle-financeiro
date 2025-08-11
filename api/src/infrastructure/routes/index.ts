@@ -3,21 +3,16 @@ import { createAuthRoutes } from './authRoutes';
 import { createAccountRoutes } from './accountRoutes';
 import { createTransactionRoutes } from './transactionRoutes';
 import { createCategoryRoutes } from './categoryRoutes';
+import { createAdminRoutes } from './adminRoutes';
 import { AuthController } from '../adapters/controllers/AuthController';
 import { AccountController } from '../adapters/controllers/AccountController';
 import { TransactionController } from '../adapters/controllers/TransactionController';
 import { CategoryController } from '../adapters/controllers/CategoryController';
+import { AdminController } from '../adapters/controllers/AdminController';
 import { AuthService } from '../../application/services/AuthService';
+import { Container } from '../config/container';
 
-interface RouteConfig {
-  authController: AuthController;
-  accountController: AccountController;
-  transactionController: TransactionController;
-  categoryController: CategoryController;
-  authService: AuthService;
-}
-
-export function createRoutes(config: RouteConfig): Router {
+export function createRoutes(container: Container): Router {
   const router = Router();
 
   // Health check
@@ -26,10 +21,11 @@ export function createRoutes(config: RouteConfig): Router {
   });
 
   // API Routes
-  router.use('/auth', createAuthRoutes(config.authController));
-  router.use('/accounts', createAccountRoutes(config.accountController, config.authService));
-  router.use('/transactions', createTransactionRoutes(config.transactionController, config.authService));
-  router.use('/categories', createCategoryRoutes(config.categoryController, config.authService));
+  router.use('/auth', createAuthRoutes(container.authController));
+  router.use('/accounts', createAccountRoutes(container.accountController, container.authService));
+  router.use('/transactions', createTransactionRoutes(container.transactionController, container.authService));
+  router.use('/categories', createCategoryRoutes(container.categoryController, container.authService));
+  router.use('/admin', createAdminRoutes(container));
 
   return router;
 }

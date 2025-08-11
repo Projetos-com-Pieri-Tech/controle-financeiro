@@ -1,9 +1,9 @@
-import { AccountRepository } from '../ports/AccountRepository';
-import { TransactionRepository } from '../ports/TransactionRepository';
-import { TransactionType } from '../entities/transaction';
+import { AccountRepository } from '../../ports/AccountRepository';
+import { TransactionRepository } from '../../ports/TransactionRepository';
+import { TransactionType } from '../../enums';
 
 export interface AccountBalance {
-  accountId: number;
+  accountId: string; // UUID
   accountName: string;
   initialBalance: number;
   totalIncome: number;
@@ -17,7 +17,7 @@ export class GetAccountBalance {
     private transactionRepository: TransactionRepository
   ) {}
 
-  async execute(userId: number, accountId: number): Promise<AccountBalance> {
+  async execute(userId: string, accountId: string): Promise<AccountBalance> { // UUID
     // Verificar se a conta existe e pertence ao usuário
     const account = await this.accountRepository.findById(accountId);
     if (!account || account.userId !== userId) {

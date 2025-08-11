@@ -1,5 +1,5 @@
 export interface Role {
-  id: number;
+  id: string; // UUID
   name: string;
   description?: string;
   createdAt: Date;

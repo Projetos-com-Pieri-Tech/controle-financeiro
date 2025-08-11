@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../../../application/services/AuthService';
+import { RegisterRequest, LoginRequest, AuthResponse } from '../../../application/dtos';
 
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   async register(req: Request, res: Response): Promise<void> {
     try {
-      const { name, email, password, roleId = 2 } = req.body; // roleId 2 = usuário padrão
+      const { name, email, password, roleId = '3e1e1e1e-1111-4111-8111-111111111112' }: RegisterRequest = req.body; // roleId padrão para usuário comum
       
       if (!name || !email || !password) {
         res.status(400).json({ error: 'Missing required fields' });
@@ -18,7 +19,8 @@ export class AuthController {
       // Remover senha do retorno
       const { passwordHash, ...userWithoutPassword } = user;
       
-      res.status(201).json({ user: userWithoutPassword });
+      const response: AuthResponse = { user: userWithoutPassword };
+      res.status(201).json(response);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
     }
@@ -26,7 +28,7 @@ export class AuthController {
 
   async login(req: Request, res: Response): Promise<void> {
     try {
-      const { email, password } = req.body;
+      const { email, password }: LoginRequest = req.body;
       
       if (!email || !password) {
         res.status(400).json({ error: 'Missing required fields' });
@@ -38,7 +40,11 @@ export class AuthController {
       // Remover senha do retorno
       const { passwordHash, ...userWithoutPassword } = user;
       
-      res.json({ user: userWithoutPassword, token });
+      const response: AuthResponse = { 
+        user: userWithoutPassword,
+        token 
+      };
+      res.json(response);
     } catch (error: any) {
       res.status(401).json({ error: error.message });
     }

@@ -1,9 +1,9 @@
-import { TransactionRepository } from '../ports/TransactionRepository';
+import { TransactionRepository } from '../../ports/TransactionRepository';
 
 export class DeleteTransaction {
   constructor(private transactionRepository: TransactionRepository) {}
 
-  async execute(userId: number, transactionId: number): Promise<boolean> {
+  async execute(userId: string, transactionId: string): Promise<boolean> { // UUID
     // Verificar se a transação existe e pertence ao usuário
     const transaction = await this.transactionRepository.findById(transactionId);
     if (!transaction || transaction.userId !== userId) {

@@ -1,23 +1,19 @@
 import { Transaction } from '../entities/transaction';
+import { BaseRepository } from './BaseRepository';
 
 export interface TransactionFilters {
-  userId?: number;
-  accountId?: number;
-  categoryId?: number;
+  userId?: string; // UUID
+  accountId?: string; // UUID
+  categoryId?: string; // UUID
   type?: string;
   startDate?: Date;
   endDate?: Date;
   isPaid?: boolean;
 }
 
-export interface TransactionRepository {
-  findById(id: number): Promise<Transaction | null>;
-  findByUserId(userId: number): Promise<Transaction[]>;
-  findByAccountId(accountId: number): Promise<Transaction[]>;
-  findByCategoryId(categoryId: number): Promise<Transaction[]>;
+export interface TransactionRepository extends BaseRepository<Transaction> {
+  findByUserId(userId: string): Promise<Transaction[]>; // UUID
+  findByAccountId(accountId: string): Promise<Transaction[]>; // UUID
+  findByCategoryId(categoryId: string): Promise<Transaction[]>; // UUID
   findByFilters(filters: TransactionFilters): Promise<Transaction[]>;
-  create(transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transaction>;
-  update(id: number, transaction: Partial<Transaction>): Promise<Transaction | null>;
-  delete(id: number): Promise<boolean>;
-  findAll(): Promise<Transaction[]>;
 }
