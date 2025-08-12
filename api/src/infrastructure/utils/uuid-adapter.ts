@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
  */
 export class UuidAdapter {
   // Mapeamento temporário para IDs
-  private static idToUuidMap = new Map<number, string>();
-  private static uuidToIdMap = new Map<string, number>();
+  private static readonly idToUuidMap = new Map<number, string>();
+  private static readonly uuidToIdMap = new Map<string, number>();
   private static nextId = 1;
 
   /**

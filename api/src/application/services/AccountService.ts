@@ -4,11 +4,11 @@ import { GetAccountBalance } from '../../domain/usecases/account/GetAccountBalan
 import { TransactionRepository } from '../../domain/ports/TransactionRepository';
 
 export class AccountService {
-  private getAccountBalance: GetAccountBalance;
+  private readonly getAccountBalance: GetAccountBalance;
 
   constructor(
-    private accountRepository: AccountRepository,
-    private transactionRepository: TransactionRepository
+    private readonly accountRepository: AccountRepository,
+    private readonly transactionRepository: TransactionRepository
   ) {
     this.getAccountBalance = new GetAccountBalance(accountRepository, transactionRepository);
   }

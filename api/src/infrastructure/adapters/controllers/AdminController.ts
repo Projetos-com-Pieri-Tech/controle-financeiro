@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { AdminService } from '../../../application/services/AdminService';
 import { User } from '../../../domain/entities/user';
 import { Transaction } from '../../../domain/entities/transaction';

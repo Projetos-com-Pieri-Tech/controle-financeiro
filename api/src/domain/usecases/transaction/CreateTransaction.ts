@@ -1,5 +1,4 @@
 import { Transaction } from '../../entities/transaction';
-import { TransactionType } from '../../enums';
 import { TransactionRepository } from '../../ports/TransactionRepository';
 import { AccountRepository } from '../../ports/AccountRepository';
 import { CategoryRepository } from '../../ports/CategoryRepository';
@@ -7,9 +6,9 @@ import { CreateTransactionDTO } from '../../../application/dtos/transaction';
 
 export class CreateTransaction {
   constructor(
-    private transactionRepository: TransactionRepository,
-    private accountRepository: AccountRepository,
-    private categoryRepository: CategoryRepository
+    private readonly transactionRepository: TransactionRepository,
+    private readonly accountRepository: AccountRepository,
+    private readonly categoryRepository: CategoryRepository
   ) {}
 
   async execute(data: CreateTransactionDTO): Promise<Transaction> {
@@ -45,7 +44,7 @@ export class CreateTransaction {
       amount: data.amount,
       type: data.type,
       transactionDate: data.transactionDate,
-      isPaid: data.isPaid !== undefined ? data.isPaid : true,
+      isPaid: data.isPaid ?? true,
       deletedAt: null
     });
 

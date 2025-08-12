@@ -13,7 +13,16 @@ export function createServer(container: Container): Application {
 
   // Middlewares de segurança
   app.use(helmet({
-    contentSecurityPolicy: false // Permitir Swagger UI
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:", "https:"],
+        connectSrc: ["'self'"]
+      }
+    }
   }));
   app.use(cors());
   

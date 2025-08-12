@@ -146,21 +146,6 @@ export function createRedisRateLimiter(redisClient?: any): RateLimitRequestHandl
     return apiRateLimiter;
   }
 
-  // Aqui você configuraria o RedisStore
-  // Exemplo (precisa instalar rate-limit-redis):
-  /*
-  import RedisStore from 'rate-limit-redis';
-  
-  return rateLimit({
-    store: new RedisStore({
-      client: redisClient,
-      prefix: 'rl:'
-    }),
-    windowMs: 15 * 60 * 1000,
-    max: 100
-  });
-  */
-  
   // Por enquanto, retorna o rate limiter padrão
   return apiRateLimiter;
 }

@@ -1,24 +1,18 @@
-import { Pool, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
+import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 import { Transaction } from '../../../domain/entities/transaction';
 import { TransactionRepository, TransactionFilters } from '../../../domain/ports/TransactionRepository';
-import { createDatabasePool } from '../../config/database';
-import { v4 as uuidv4 } from 'uuid';
+import { MySQLBaseRepository } from './MySQLBaseRepository';
 
-export class MySQLTransactionRepository implements TransactionRepository {
-  private readonly pool: Pool;
-
-  constructor() {
-    this.pool = createDatabasePool();
-  }
+export class MySQLTransactionRepository extends MySQLBaseRepository<Transaction> implements TransactionRepository {
 
   async create(transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>): Promise<Transaction> {
-    const id = uuidv4();
+    const id = this.generateId();
     const query = `
       INSERT INTO transactions (id, user_id, account_id, category_id, amount, description, type, transaction_date, is_paid, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
     `;
     
-    await this.pool.execute(query, [
+    await this.executeInsert(query, [
       id,
       transaction.userId,
       transaction.accountId,
@@ -47,13 +41,8 @@ export class MySQLTransactionRepository implements TransactionRepository {
       WHERE t.id = ?
     `;
     
-    const [rows] = await this.pool.execute<RowDataPacket[]>(query, [id]);
-    
-    if (rows.length === 0) {
-      return null;
-    }
-
-    return this.mapRowToTransaction(rows[0]);
+    const rows = await this.executeSelect<RowDataPacket>(query, [id]);
+    return rows.length > 0 ? this.mapRowToEntity(rows[0]) : null;
   }
 
   async findByUserId(userId: string): Promise<Transaction[]> {
@@ -67,8 +56,8 @@ export class MySQLTransactionRepository implements TransactionRepository {
       ORDER BY t.transaction_date DESC, t.created_at DESC
     `;
     
-    const [rows] = await this.pool.execute<RowDataPacket[]>(query, [userId]);
-    return rows.map(row => this.mapRowToTransaction(row));
+    const rows = await this.executeSelect<RowDataPacket>(query, [userId]);
+    return rows.map(row => this.mapRowToEntity(row));
   }
 
   async findByAccountId(accountId: string): Promise<Transaction[]> {
@@ -82,8 +71,8 @@ export class MySQLTransactionRepository implements TransactionRepository {
       ORDER BY t.transaction_date DESC, t.created_at DESC
     `;
     
-    const [rows] = await this.pool.execute<RowDataPacket[]>(query, [accountId]);
-    return rows.map(row => this.mapRowToTransaction(row));
+    const rows = await this.executeSelect<RowDataPacket>(query, [accountId]);
+    return rows.map(row => this.mapRowToEntity(row));
   }
 
   async findByCategoryId(categoryId: string): Promise<Transaction[]> {
@@ -97,8 +86,8 @@ export class MySQLTransactionRepository implements TransactionRepository {
       ORDER BY t.transaction_date DESC, t.created_at DESC
     `;
     
-    const [rows] = await this.pool.execute<RowDataPacket[]>(query, [categoryId]);
-    return rows.map(row => this.mapRowToTransaction(row));
+    const rows = await this.executeSelect<RowDataPacket>(query, [categoryId]);
+    return rows.map(row => this.mapRowToEntity(row));
   }
 
   async findByFilters(filters: TransactionFilters): Promise<Transaction[]> {
@@ -150,8 +139,8 @@ export class MySQLTransactionRepository implements TransactionRepository {
 
     query += ' ORDER BY t.transaction_date DESC, t.created_at DESC';
 
-    const [rows] = await this.pool.execute<RowDataPacket[]>(query, queryParams);
-    return rows.map(row => this.mapRowToTransaction(row));
+    const rows = await this.executeSelect<RowDataPacket>(query, queryParams);
+    return rows.map(row => this.mapRowToEntity(row));
   }
 
   async update(id: string, transaction: Partial<Transaction>): Promise<Transaction | null> {
@@ -195,9 +184,9 @@ export class MySQLTransactionRepository implements TransactionRepository {
     values.push(id);
 
     const query = `UPDATE transactions SET ${updates.join(', ')} WHERE id = ?`;
+    const success = await this.executeUpdate(query, values);
     
-    await this.pool.execute(query, values);
-    return this.findById(id);
+    return success ? this.findById(id) : null;
   }
 
   async delete(id: string): Promise<boolean> {
@@ -216,11 +205,11 @@ export class MySQLTransactionRepository implements TransactionRepository {
       ORDER BY t.transaction_date DESC, t.created_at DESC
     `;
     
-    const [rows] = await this.pool.execute<RowDataPacket[]>(query);
-    return rows.map(row => this.mapRowToTransaction(row));
+    const rows = await this.executeSelect<RowDataPacket>(query);
+    return rows.map(row => this.mapRowToEntity(row));
   }
 
-  private mapRowToTransaction(row: RowDataPacket): Transaction {
+  protected mapRowToEntity(row: RowDataPacket): Transaction {
     return {
       id: row.id,
       userId: row.user_id,

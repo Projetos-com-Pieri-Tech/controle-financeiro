@@ -4,12 +4,6 @@ import { createAccountRoutes } from './accountRoutes';
 import { createTransactionRoutes } from './transactionRoutes';
 import { createCategoryRoutes } from './categoryRoutes';
 import { createAdminRoutes } from './adminRoutes';
-import { AuthController } from '../adapters/controllers/AuthController';
-import { AccountController } from '../adapters/controllers/AccountController';
-import { TransactionController } from '../adapters/controllers/TransactionController';
-import { CategoryController } from '../adapters/controllers/CategoryController';
-import { AdminController } from '../adapters/controllers/AdminController';
-import { AuthService } from '../../application/services/AuthService';
 import { Container } from '../config/container';
 
 export function createRoutes(container: Container): Router {

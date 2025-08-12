@@ -11,8 +11,8 @@ export interface AuthTokenPayload {
 
 export class AuthService {
   constructor(
-    private userRepository: UserRepository,
-    private jwtSecret: string
+    private readonly userRepository: UserRepository,
+    private readonly jwtSecret: string
   ) {}
 
   async register(name: string, email: string, password: string, roleId: string): Promise<User> {

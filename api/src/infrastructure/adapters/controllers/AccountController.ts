@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { AccountService } from '../../../application/services/AccountService';
-import { AuthRequest, CreateAccountRequest, UpdateAccountRequest, AccountResponse } from '../../../application/dtos';
+import { AuthRequest } from '../../../application/dtos';
 
 export class AccountController {
-  constructor(private accountService: AccountService) {}
+  constructor(private readonly accountService: AccountService) {}
 
   async create(req: AuthRequest, res: Response): Promise<void> {
     try {

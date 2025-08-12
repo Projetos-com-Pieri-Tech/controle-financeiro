@@ -9,15 +9,15 @@ import { GetTransactionsByUser } from '../../domain/usecases/transaction/GetTran
 import { CreateTransactionDTO, UpdateTransactionDTO } from '../dtos';
 
 export class TransactionService {
-  private createTransaction: CreateTransaction;
-  private updateTransaction: UpdateTransaction;
-  private deleteTransaction: DeleteTransaction;
-  private getTransactionsByUser: GetTransactionsByUser;
+  private readonly createTransaction: CreateTransaction;
+  private readonly updateTransaction: UpdateTransaction;
+  private readonly deleteTransaction: DeleteTransaction;
+  private readonly getTransactionsByUser: GetTransactionsByUser;
 
   constructor(
-    private transactionRepository: TransactionRepository,
-    private accountRepository: AccountRepository,
-    private categoryRepository: CategoryRepository
+    private readonly transactionRepository: TransactionRepository,
+    private readonly accountRepository: AccountRepository,
+    private readonly categoryRepository: CategoryRepository
   ) {
     this.createTransaction = new CreateTransaction(
       transactionRepository,

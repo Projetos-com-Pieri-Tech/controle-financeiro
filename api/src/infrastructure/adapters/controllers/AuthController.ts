@@ -3,7 +3,7 @@ import { AuthService } from '../../../application/services/AuthService';
 import { RegisterRequest, LoginRequest, AuthResponse } from '../../../application/dtos';
 
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   async register(req: Request, res: Response): Promise<void> {
     try {

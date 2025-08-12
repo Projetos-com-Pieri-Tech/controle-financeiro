@@ -13,8 +13,8 @@ export interface AccountBalance {
 
 export class GetAccountBalance {
   constructor(
-    private accountRepository: AccountRepository,
-    private transactionRepository: TransactionRepository
+    private readonly accountRepository: AccountRepository,
+    private readonly transactionRepository: TransactionRepository
   ) {}
 
   async execute(userId: string, accountId: string): Promise<AccountBalance> { // UUID

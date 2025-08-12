@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { TransactionService } from '../../../application/services/TransactionService';
-import { AuthRequest, CreateTransactionRequest, UpdateTransactionRequest, TransactionResponse, TransactionFiltersRequest } from '../../../application/dtos';
+import { AuthRequest } from '../../../application/dtos';
 
 export class TransactionController {
-  constructor(private transactionService: TransactionService) {}
+  constructor(private readonly transactionService: TransactionService) {}
 
   async create(req: AuthRequest, res: Response): Promise<void> {
     try {

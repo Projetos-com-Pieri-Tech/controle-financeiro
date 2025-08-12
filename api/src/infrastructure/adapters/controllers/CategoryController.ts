@@ -1,13 +1,12 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { CategoryService } from '../../../application/services/CategoryService';
-import { AuthRequest, CreateCategoryRequest, UpdateCategoryRequest, CategoryResponse } from '../../../application/dtos';
+import { AuthRequest } from '../../../application/dtos';
 
 export class CategoryController {
-  constructor(private categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) {}
 
   async create(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const userId = req.user!.userId;
       const { name, isGlobal } = req.body;
 
       if (!name) {

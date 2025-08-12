@@ -2,7 +2,7 @@ import { Category } from '../../domain/entities/category';
 import { CategoryRepository } from '../../domain/ports/CategoryRepository';
 
 export class CategoryService {
-  constructor(private categoryRepository: CategoryRepository) {}
+  constructor(private readonly categoryRepository: CategoryRepository) {}
 
   async createCategory(name: string, userId?: string): Promise<Category> { // UUID
     // Verificar se já existe uma categoria com o mesmo nome para o usuário
