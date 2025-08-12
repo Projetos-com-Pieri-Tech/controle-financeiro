@@ -19,6 +19,7 @@ export function requireAdmin() {
 
       next();
     } catch (error) {
+      console.error('Admin authorization check failed:', error);
       res.status(500).json({ error: 'Authorization check failed' });
     }
   };
@@ -43,6 +44,7 @@ export function requireRole(roleId: string) {
 
       next();
     } catch (error) {
+      console.error('Role authorization check failed:', error);
       res.status(500).json({ error: 'Authorization check failed' });
     }
   };
@@ -70,6 +72,7 @@ export function requireRoleOrOwnership(roleId: string) {
 
       next();
     } catch (error) {
+      console.error('Ownership authorization check failed:', error);
       res.status(500).json({ error: 'Authorization check failed' });
     }
   };

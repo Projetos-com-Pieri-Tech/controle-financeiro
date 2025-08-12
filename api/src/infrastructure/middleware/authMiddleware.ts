@@ -24,6 +24,7 @@ export function createAuthMiddleware(authService: AuthService) {
       
       next();
     } catch (error: any) {
+      console.error('Authentication failed:', error);
       res.status(401).json({ error: 'Invalid or expired token' });
     }
   };

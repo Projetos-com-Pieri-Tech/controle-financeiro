@@ -167,6 +167,7 @@ export function resetRateLimit(store: any) {
       // This is a placeholder implementation
       res.json({ message: `Rate limit reset for IP: ${ip}` });
     } catch (error) {
+      console.error('Failed to reset rate limit:', error);
       res.status(500).json({ error: 'Failed to reset rate limit' });
     }
   };
