@@ -1,0 +1,33 @@
+import { Response, NextFunction } from 'express';
+import { AuthService } from '../../../application/services/AuthService';
+import { AuthRequest } from '../../../application/dtos';
+
+export function createAuthMiddleware(authService: AuthService) {
+  return async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const authHeader = req.headers.authorization;
+      
+      if (!authHeader) {
+        res.status(401).json({ error: 'No token provided' });
+        return;
+      }
+
+      const [bearer, token] = authHeader.split(' ');
+      
+      if (bearer !== 'Bearer' || !token) {
+        res.status(401).json({ error: 'Invalid token format' });
+        return;
+      }
+
+      const payload = authService.verifyToken(token);
+      req.user = payload;
+      
+      next();
+    } catch (error: any) {
+      // Log authentication failure for security monitoring
+      const errorMessage = error instanceof Error ? error.message : 'Authentication failed';
+      console.warn('Authentication failed:', errorMessage);
+      res.status(401).json({ error: 'Invalid or expired token' });
+    }
+  };
+}
