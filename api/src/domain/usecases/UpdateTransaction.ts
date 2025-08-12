@@ -6,9 +6,9 @@ import { UpdateTransactionDTO } from '../../application/dtos/transaction';
 
 export class UpdateTransaction {
   constructor(
-    private transactionRepository: TransactionRepository,
-    private accountRepository: AccountRepository,
-    private categoryRepository: CategoryRepository
+    private readonly transactionRepository: TransactionRepository,
+    private readonly accountRepository: AccountRepository,
+    private readonly categoryRepository: CategoryRepository
   ) {}
 
   async execute(data: UpdateTransactionDTO): Promise<Transaction | null> {
@@ -46,8 +46,8 @@ export class UpdateTransaction {
   }
 
   private async validateExistingTransaction(data: UpdateTransactionDTO): Promise<void> {
-    const transaction = await this.transactionRepository.findById(data.transactionId);
-    if (!transaction || transaction.userId !== data.userId) {
+    const existingTransaction = await this.transactionRepository.findById(data.transactionId);
+    if (!existingTransaction || existingTransaction.userId !== data.userId) {
       throw new Error('Transaction not found or does not belong to user');
     }
   }
