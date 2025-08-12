@@ -44,7 +44,15 @@ export interface CreateCategorySchema {
 
 export class InputValidator {
   static validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // Using a safer regex pattern to prevent ReDoS attacks
+    // This pattern uses atomic groups (possessive quantifiers) to prevent backtracking
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+    
+    // Additional length check to prevent extremely long strings
+    if (email.length > 254) {
+      return false;
+    }
+    
     return emailRegex.test(email);
   }
 

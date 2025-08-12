@@ -22,8 +22,8 @@ export interface LogEntry {
 
 export class Logger {
   private static instance: Logger;
-  private logLevel: LogLevel;
-  private context: string;
+  private readonly logLevel: LogLevel;
+  private readonly context: string;
 
   private constructor(context: string = 'Application') {
     this.context = context;

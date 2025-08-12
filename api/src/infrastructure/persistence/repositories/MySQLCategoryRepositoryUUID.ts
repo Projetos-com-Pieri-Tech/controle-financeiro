@@ -125,7 +125,10 @@ export class MySQLCategoryRepositoryUUID extends MySQLBaseRepository<Category> i
       const deleteResult = result as any;
       return deleteResult.affectedRows > 0;
     } catch (error) {
-      return false;
+      // Log error and re-throw for proper handling upstream
+      const errorMessage = error instanceof Error ? error.message : 'Unknown database error';
+      console.error(`Failed to delete category ${id}:`, errorMessage);
+      throw new Error(`Database error while deleting category: ${errorMessage}`);
     }
   }
 

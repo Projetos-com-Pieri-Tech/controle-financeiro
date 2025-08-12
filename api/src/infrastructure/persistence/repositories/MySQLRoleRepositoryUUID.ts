@@ -85,7 +85,10 @@ export class MySQLRoleRepositoryUUID extends MySQLBaseRepository<Role> implement
       const deleteResult = result as any;
       return deleteResult.affectedRows > 0;
     } catch (error) {
-      return false;
+      // Log error and re-throw for proper handling upstream
+      const errorMessage = error instanceof Error ? error.message : 'Unknown database error';
+      console.error(`Failed to delete role ${id}:`, errorMessage);
+      throw new Error(`Database error while deleting role: ${errorMessage}`);
     }
   }
 

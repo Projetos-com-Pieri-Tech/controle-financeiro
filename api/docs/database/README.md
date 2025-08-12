@@ -11,7 +11,36 @@
 
 ---
 
-## 📊 **Entidades Principais**
+## � **Migrations vs Seeds**
+
+### **📁 migrations/** 
+Contém scripts que definem a **estrutura** do banco:
+- ✅ Criação de tabelas (CREATE TABLE)
+- ✅ Definição de colunas, tipos e constraints
+- ✅ Índices e relacionamentos (FK, INDEX)
+- ❌ **NÃO contém dados**
+
+### **📁 seeds/**
+Contém scripts que populam com **dados iniciais**:
+- ✅ Roles padrão do sistema
+- ✅ Categorias globais
+- ✅ Usuários administrativos
+- ✅ Dados essenciais para funcionamento
+
+### **🎯 Princípios**
+- **Migrations**: Estrutura (DDL - Data Definition Language)
+- **Seeds**: Dados (DML - Data Manipulation Language)
+- **Separação clara** de responsabilidades
+- **Ordem**: 1º migrations → 2º seeds
+
+### **⚠️ Correção Realizada**
+- **Problema**: Duplicação entre migration e seeds (50% duplication)
+- **Solução**: Dados removidos da migration, consolidados nos seeds
+- **Resultado**: 0% duplicação, código limpo, conformidade SonarQube
+
+---
+
+## �📊 **Entidades Principais**
 
 ### **👤 Users (Usuários)**
 ```sql

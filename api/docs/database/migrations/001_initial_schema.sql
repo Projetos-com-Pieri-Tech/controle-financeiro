@@ -108,19 +108,6 @@ INSERT INTO roles (id, name, description) VALUES
 (@admin_role_id, 'admin', 'Administrador do sistema'),
 (@user_role_id, 'user', 'Usuário padrão');
 
--- Inserir categorias globais com UUID
-INSERT INTO categories (id, user_id, name) VALUES 
-(UUID(), NULL, 'Alimentação'),
-(UUID(), NULL, 'Transporte'),
-(UUID(), NULL, 'Saúde'),
-(UUID(), NULL, 'Educação'),
-(UUID(), NULL, 'Entretenimento'),
-(UUID(), NULL, 'Casa'),
-(UUID(), NULL, 'Roupas'),
-(UUID(), NULL, 'Salário'),
-(UUID(), NULL, 'Freelance'),
-(UUID(), NULL, 'Investimentos');
-
 -- ========================================
 -- VERIFICAÇÕES
 -- ========================================

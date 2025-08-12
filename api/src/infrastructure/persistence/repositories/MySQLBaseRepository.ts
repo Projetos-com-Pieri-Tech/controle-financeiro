@@ -92,10 +92,11 @@ export abstract class MySQLBaseRepository<T> {
    */
   protected async countBase(
     tableName: string, 
-    whereClause: string = '1=1', 
+    whereClause?: string, 
     params: unknown[] = []
   ): Promise<number> {
-    const query = `SELECT COUNT(*) as count FROM ${tableName} WHERE ${whereClause} AND deleted_at IS NULL`;
+    const finalWhereClause = whereClause || '1=1';
+    const query = `SELECT COUNT(*) as count FROM ${tableName} WHERE ${finalWhereClause} AND deleted_at IS NULL`;
     const rows = await this.executeSelect<RowDataPacket>(query, params);
     
     return rows[0]?.count || 0;
@@ -106,12 +107,21 @@ export abstract class MySQLBaseRepository<T> {
    */
   protected async findManyWithPagination(
     tableName: string,
-    whereClause: string = '1=1',
-    params: unknown[] = [],
     paginationParams: PaginationParams,
-    mapper: (row: RowDataPacket) => T,
-    allowedSortFields: string[] = []
+    options: {
+      whereClause?: string;
+      params?: unknown[];
+      mapper?: (row: RowDataPacket) => T;
+      allowedSortFields?: string[];
+    } = {}
   ): Promise<PaginatedResponse<T>> {
+    const { 
+      whereClause = '1=1',
+      params = [],
+      mapper = this.mapRowToEntity.bind(this),
+      allowedSortFields = []
+    } = options;
+    
     const { page, limit, sortBy, sortOrder } = paginationParams;
     const offset = PaginationHelper.getOffset(page || 1, limit || 10);
     

@@ -66,7 +66,9 @@ export class AuthService {
     try {
       return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
     } catch (error) {
-      throw new Error('Invalid token');
+      // Re-throw with more specific error information
+      const message = error instanceof Error ? error.message : 'Invalid token';
+      throw new Error(`Token verification failed: ${message}`);
     }
   }
 }

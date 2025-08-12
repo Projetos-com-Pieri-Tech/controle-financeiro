@@ -27,7 +27,10 @@ export class RefreshToken {
 
       return newToken;
     } catch (error) {
-      throw new Error('Invalid token for refresh');
+      // Log error for debugging and re-throw with context
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error during token refresh';
+      console.error('Token refresh failed:', errorMessage);
+      throw new Error(`Token refresh failed: ${errorMessage}`);
     }
   }
 }

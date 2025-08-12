@@ -1,6 +1,4 @@
 export class LogoutUser {
-  constructor() {}
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async execute(_token: string): Promise<void> {
     // Em uma implementação mais robusta, este use case poderia:

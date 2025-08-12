@@ -27,11 +27,25 @@ export class PaginationHelper {
   static readonly MAX_LIMIT = 100;
 
   static parsePaginationParams(query: Record<string, unknown>): PaginationParams {
-    const page = Math.max(1, parseInt(String(query.page || this.DEFAULT_PAGE)));
+    // Safe parsing with explicit string conversion
+    const pageValue = query.page;
+    const limitValue = query.limit;
+    
+    const page = Math.max(1, parseInt(
+      typeof pageValue === 'string' || typeof pageValue === 'number' 
+        ? String(pageValue) 
+        : String(this.DEFAULT_PAGE)
+    ));
+    
     const limit = Math.min(
       this.MAX_LIMIT,
-      Math.max(1, parseInt(String(query.limit || this.DEFAULT_LIMIT)))
+      Math.max(1, parseInt(
+        typeof limitValue === 'string' || typeof limitValue === 'number'
+          ? String(limitValue)
+          : String(this.DEFAULT_LIMIT)
+      ))
     );
+    
     const sortBy = typeof query.sortBy === 'string' ? query.sortBy : undefined;
     const sortOrder = query.sortOrder === 'desc' ? 'desc' : 'asc';
 
