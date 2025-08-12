@@ -9,9 +9,9 @@ export * from './entities/category';
 export * from './entities/transaction';
 
 // Ports
-export * from './ports/BaseRepository';
-export * from './ports/UserRepository';
-export * from './ports/RoleRepository';
-export * from './ports/AccountRepository';
-export * from './ports/CategoryRepository';
-export * from './ports/TransactionRepository';
+export * from './ports/repositories/BaseRepository';
+export * from './ports/repositories/UserRepository';
+export * from './ports/repositories/RoleRepository';
+export * from './ports/repositories/AccountRepository';
+export * from './ports/repositories/CategoryRepository';
+export * from './ports/repositories/TransactionRepository';

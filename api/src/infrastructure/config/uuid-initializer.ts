@@ -32,6 +32,5 @@ export class UuidInitializer {
 
     UuidAdapter.initializeMapping(knownMappings);
     
-    console.log('🔄 UUID Adapter inicializado com', knownMappings.length, 'mapeamentos');
   }
 }

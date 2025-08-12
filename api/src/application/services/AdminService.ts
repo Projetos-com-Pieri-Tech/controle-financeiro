@@ -1,7 +1,7 @@
-import { UserRepository } from '../../domain/ports/UserRepository';
-import { AccountRepository } from '../../domain/ports/AccountRepository';
-import { TransactionRepository } from '../../domain/ports/TransactionRepository';
-import { CategoryRepository } from '../../domain/ports/CategoryRepository';
+import { UserRepository } from '../../domain/ports/repositories/UserRepository';
+import { AccountRepository } from '../../domain/ports/repositories/AccountRepository';
+import { TransactionRepository } from '../../domain/ports/repositories/TransactionRepository';
+import { CategoryRepository } from '../../domain/ports/repositories/CategoryRepository';
 import { User } from '../../domain/entities/user';
 import { Category } from '../../domain/entities/category';
 import { TransactionType } from '../../domain/enums';

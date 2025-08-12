@@ -3,11 +3,33 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-let pool: mysql.Pool;
+class DatabaseConnection {
+  private static instance: DatabaseConnection;
+  private pool: mysql.Pool | null = null;
+  private isConnected = false;
 
-export function createMySQLPool(): mysql.Pool {
-  if (!pool) {
-    pool = mysql.createPool({
+  private constructor() {}
+
+  static getInstance(): DatabaseConnection {
+    if (!DatabaseConnection.instance) {
+      DatabaseConnection.instance = new DatabaseConnection();
+    }
+    return DatabaseConnection.instance;
+  }
+
+  getPool(): mysql.Pool {
+    if (!this.pool || !this.isConnected) {
+      this.createPool();
+    }
+    return this.pool!;
+  }
+
+  private createPool(): void {
+    if (this.pool) {
+      return;
+    }
+
+    this.pool = mysql.createPool({
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT || '3306'),
       database: process.env.DB_NAME || 'controle_financeiro',
@@ -18,11 +40,20 @@ export function createMySQLPool(): mysql.Pool {
       queueLimit: 0,
     });
 
-    // Event listeners para logs de conexão
-    console.log('Pool de conexões MySQL criado');
+    this.isConnected = true;
   }
-  
-  return pool;
+
+  async closePool(): Promise<void> {
+    if (this.pool && this.isConnected) {
+      await this.pool.end();
+      this.pool = null;
+      this.isConnected = false;
+    }
+  }
+}
+
+export function createMySQLPool(): mysql.Pool {
+  return DatabaseConnection.getInstance().getPool();
 }
 
 export async function testConnection(): Promise<boolean> {
@@ -31,7 +62,6 @@ export async function testConnection(): Promise<boolean> {
     const connection = await pool.getConnection();
     await connection.execute('SELECT NOW() as currentTime');
     connection.release();
-    console.log('Conexão com o banco de dados MySQL testada com sucesso');
     return true;
   } catch (error) {
     console.error('Erro ao conectar com o banco de dados MySQL:', error);
@@ -40,8 +70,5 @@ export async function testConnection(): Promise<boolean> {
 }
 
 export async function closeDatabasePool(): Promise<void> {
-  if (pool) {
-    await pool.end();
-    console.log('Pool de conexões MySQL fechado');
-  }
+  await DatabaseConnection.getInstance().closePool();
 }

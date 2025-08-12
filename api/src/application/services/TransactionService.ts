@@ -1,11 +1,11 @@
 import { Transaction } from '../../domain/entities/transaction';
-import { TransactionRepository, TransactionFilters } from '../../domain/ports/TransactionRepository';
-import { AccountRepository } from '../../domain/ports/AccountRepository';
-import { CategoryRepository } from '../../domain/ports/CategoryRepository';
-import { CreateTransaction } from '../../domain/usecases/transaction/CreateTransaction';
-import { UpdateTransaction } from '../../domain/usecases/transaction/UpdateTransaction';
-import { DeleteTransaction } from '../../domain/usecases/transaction/DeleteTransaction';
-import { GetTransactionsByUser } from '../../domain/usecases/transaction/GetTransactionsByUser';
+import { TransactionRepository, TransactionFilters } from '../../domain/ports/repositories/TransactionRepository';
+import { AccountRepository } from '../../domain/ports/repositories/AccountRepository';
+import { CategoryRepository } from '../../domain/ports/repositories/CategoryRepository';
+import { CreateTransaction } from '../usecases/transaction/CreateTransaction';
+import { UpdateTransaction } from '../usecases/transaction/UpdateTransaction';
+import { DeleteTransaction } from '../usecases/transaction/DeleteTransaction';
+import { GetTransactionsByUser } from '../usecases/transaction/GetTransactionsByUser';
 import { CreateTransactionDTO, UpdateTransactionDTO } from '../dtos';
 
 export class TransactionService {

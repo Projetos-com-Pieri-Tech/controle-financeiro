@@ -1,25 +1,27 @@
 import { Pool } from 'mysql2/promise';
 
 // Repositories
-import { MySQLUserRepository } from '../adapters/repositories/MySQLUserRepositoryUUID';
-import { MySQLRoleRepositoryUUID } from '../adapters/repositories/MySQLRoleRepositoryUUID';
-import { MySQLAccountRepository } from '../adapters/repositories/MySQLAccountRepositoryUUID';
-import { MySQLTransactionRepository } from '../adapters/repositories/MySQLTransactionRepositoryUUID';
-import { MySQLCategoryRepositoryUUID } from '../adapters/repositories/MySQLCategoryRepositoryUUID';
+import { MySQLUserRepository } from '../persistence/repositories/MySQLUserRepositoryUUID';
+import { MySQLRoleRepositoryUUID } from '../persistence/repositories/MySQLRoleRepositoryUUID';
+import { MySQLAccountRepository } from '../persistence/repositories/MySQLAccountRepositoryUUID';
+import { MySQLTransactionRepository } from '../persistence/repositories/MySQLTransactionRepositoryUUID';
+import { MySQLCategoryRepositoryUUID } from '../persistence/repositories/MySQLCategoryRepositoryUUID';
 
 // Services
-import { AuthService } from '../../application/services/AuthService';
-import { AccountService } from '../../application/services/AccountService';
-import { TransactionService } from '../../application/services/TransactionService';
-import { CategoryService } from '../../application/services/CategoryService';
-import { AdminService } from '../../application/services/AdminService';
+import { 
+  AuthService,
+  AccountService,
+  TransactionService,
+  CategoryService,
+  AdminService
+} from '../../application/services';
 
 // Controllers
-import { AuthController } from '../adapters/controllers/AuthController';
-import { AccountController } from '../adapters/controllers/AccountController';
-import { TransactionController } from '../adapters/controllers/TransactionController';
-import { CategoryController } from '../adapters/controllers/CategoryController';
-import { AdminController } from '../adapters/controllers/AdminController';
+import { AuthController } from '../web/controllers/AuthController';
+import { AccountController } from '../web/controllers/AccountController';
+import { TransactionController } from '../web/controllers/TransactionController';
+import { CategoryController } from '../web/controllers/CategoryController';
+import { AdminController } from '../web/controllers/AdminController';
 
 export interface Container {
   // Database
@@ -49,11 +51,11 @@ export interface Container {
 
 export function createContainer(dbPool: Pool): Container {
   // Inicializar repositories
-  const userRepository = new MySQLUserRepository();
-  const roleRepository = new MySQLRoleRepositoryUUID();
-  const accountRepository = new MySQLAccountRepository();
-  const transactionRepository = new MySQLTransactionRepository();
-  const categoryRepository = new MySQLCategoryRepositoryUUID();
+  const userRepository = new MySQLUserRepository(dbPool);
+  const roleRepository = new MySQLRoleRepositoryUUID(dbPool);
+  const accountRepository = new MySQLAccountRepository(dbPool);
+  const transactionRepository = new MySQLTransactionRepository(dbPool);
+  const categoryRepository = new MySQLCategoryRepositoryUUID(dbPool);
   
   // Inicializar services
   const jwtSecret = process.env.JWT_SECRET || 'default-secret-change-in-production';

@@ -1,0 +1,16 @@
+import { TransactionRepository } from '../../../domain/ports/repositories/TransactionRepository';
+
+export class DeleteTransaction {
+  constructor(private readonly transactionRepository: TransactionRepository) {}
+
+  async execute(userId: string, transactionId: string): Promise<boolean> { // UUID
+    // Verificar se a transação existe e pertence ao usuário
+    const transaction = await this.transactionRepository.findById(transactionId);
+    if (!transaction || transaction.userId !== userId) {
+      throw new Error('Transaction not found or does not belong to user');
+    }
+
+    // Soft delete
+    return await this.transactionRepository.delete(transactionId);
+  }
+}

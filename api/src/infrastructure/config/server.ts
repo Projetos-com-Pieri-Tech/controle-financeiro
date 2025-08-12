@@ -2,10 +2,10 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { errorHandler } from '../middleware/errorHandler';
-import { apiRateLimiter } from '../middleware/rateLimiter';
+import { errorHandler } from '../web/middleware/errorHandler';
+import { apiRateLimiter } from '../web/middleware/rateLimiter';
 import { setupSwagger } from './swagger';
-import { createRoutes } from '../routes';
+import { createRoutes } from '../web/routes';
 import { Container } from './container';
 
 export function createServer(container: Container): Application {

@@ -8,7 +8,7 @@ export class MySQLUuidAdapter {
   /**
    * Converte insertId para UUID string ou gera novo UUID
    */
-  static handleInsertId(insertId: number): string {
+  static handleInsertId(): string {
     // Em produção, o banco gerará UUID automaticamente
     // Para desenvolvimento, vamos gerar UUID
     return uuidv4();

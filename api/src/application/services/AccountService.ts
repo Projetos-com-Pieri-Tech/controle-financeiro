@@ -1,7 +1,7 @@
 import { Account } from '../../domain/entities/account';
-import { AccountRepository } from '../../domain/ports/AccountRepository';
-import { GetAccountBalance } from '../../domain/usecases/account/GetAccountBalance';
-import { TransactionRepository } from '../../domain/ports/TransactionRepository';
+import { AccountRepository } from '../../domain/ports/repositories/AccountRepository';
+import { GetAccountBalance } from '../usecases/account/GetAccountBalance';
+import { TransactionRepository } from '../../domain/ports/repositories/TransactionRepository';
 
 export class AccountService {
   private readonly getAccountBalance: GetAccountBalance;

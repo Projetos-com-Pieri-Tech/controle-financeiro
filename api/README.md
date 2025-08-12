@@ -1,531 +1,391 @@
-# API de Controle Financeiro
+# 💰 API de Controle Financeiro
 
-![License](https://img.## 🗃️ Banco de Dados
-
-O sistema utiliza MySQL com uma arquitetura otimizada para performance e escalabilidade:elds.io/badge/license-ISC-blue.svg)
+![License](https://img.shields.io/badge/license-ISC-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)
 ![TypeScript](https://img.shields.io/badge/typescript-5.0-blue)
 ![Build](https://img.shields.io/badge/build-passing-brightgreen)
-![Tests](https://img.shields.io/badge/tests-passing-brightgreen)
-![Coverage](https://img.shields.io/badge/coverage-0%25-red)
+![MySQL](https://img.shields.io/badge/mysql-8.0-blue)
+![Architecture](https://img.shields.io/badge/architecture-hexagonal-purple)
 
 ## 📋 Sobre o Projeto
 
-API REST para controle financeiro pessoal desenvolvida com arquitetura hexagonal (ports and adapters), permitindo o gerenciamento de contas, transações e categorias financeiras.
+API REST robusta para controle financeiro pessoal desenvolvida com **Arquitetura Hexagonal** (Ports & Adapters), seguindo os princípios SOLID e Clean Architecture. Permite gerenciamento completo de usuários, contas, transações e categorias financeiras com alta performance e escalabilidade.
 
-## 📊 Status do Projeto
+## 🚀 Status do Projeto
 
-🚧 **Em Desenvolvimento Ativo**
+🎯 **Versão Estável - v1.0**
 
-- ✅ Arquitetura hexagonal implementada
-- ✅ API REST funcional
-- ✅ Autenticação JWT
-- ✅ Validação de dados
-- ✅ Configuração de testes
-- ⚠️ Testes unitários (0% cobertura - em desenvolvimento)
-- ⚠️ Documentação API (Swagger pendente)
-- ⚠️ Migrações de banco (em desenvolvimento)
+### ✅ Implementado
+- **Arquitetura Hexagonal** - Estrutura completa e organizada
+- **API REST** - Endpoints funcionais para todas as entidades
+- **Autenticação JWT** - Sistema de login e autorização
+- **Autorização por Roles** - Admin e User com permissões específicas
+- **Validação de Dados** - Middleware de validação robusto
+- **Rate Limiting** - Proteção contra ataques de força bruta
+- **CORS & Security** - Headers de segurança configurados
+- **Swagger Documentation** - Documentação API completa
+- **Error Handling** - Tratamento global de erros
+- **Database Schema** - Estrutura MySQL otimizada com UUIDs
+- **Logging** - Sistema de logs com Morgan
 
-## 🏗️ Arquitetura
+### 🚧 Em Desenvolvimento
+- **Testes Unitários** - Cobertura em implementação
+- **Sistema de Migrations** - Versionamento do banco
+- **CI/CD Pipeline** - Automação de deploy
+- **Monitoring** - Métricas e observabilidade
 
-O projeto segue a **Arquitetura Hexagonal** com as seguintes camadas:
+## 🏗️ Arquitetura Hexagonal
 
-### Domain Layer (Núcleo)
-- **Entities**: Modelos de domínio (User, Account, Transaction, Category, Role)
-- **Ports**: Interfaces dos repositórios
-- **Use Cases**: Lógica de negócio principal
-
-### Application Layer
-- **Services**: Orquestração dos use cases e lógica adicional
-
-### Infrastructure Layer
-- **Controllers**: Endpoints da API
-- **Repositories**: Implementação dos repositórios (MySQL)
-- **Middleware**: Autenticação, validação, rate limiting
-- **Config**: Configuração do servidor e banco de dados
-
-## 🚀 Tecnologias
-
-- **Node.js** + **TypeScript**
-- **Express.js** - Framework web
-- **MySQL** - Banco de dados
-- **JWT** - Autenticação
-- **bcrypt** - Hash de senhas
-- **Joi** - Validação de dados
-- **Helmet** - Segurança
-- **Rate Limiting** - Proteção contra abuso
-
-## �️ Banco de Dados
-
-O sistema utiliza PostgreSQL com uma arquitetura otimizada para performance e escalabilidade:
-
-- **5 tabelas principais**: users, roles, accounts, transactions, categories
-- **Soft delete**: Exclusão lógica em todas as tabelas
-- **Índices otimizados**: Para consultas frequentes
-- **ENUMs**: Para garantir consistência de dados
-- **Auditoria completa**: Timestamps de criação, atualização e exclusão
-
-📋 **[Ver documentação completa do banco de dados](./docs/database-schema.md)**
-
-### Estrutura Principal
-- **Users & Roles**: Sistema de usuários com controle de acesso
-- **Accounts**: Contas financeiras (corrente, poupança, cartão, etc.)
-- **Transactions**: Movimentações financeiras (receitas e despesas)
-- **Categories**: Categorização personalizável por usuário
-
-## �📦 Instalação
-
-### Pré-requisitos
-
-- Node.js (v16 ou superior)
-- MySQL (v8.0 ou superior)
-- npm ou yarn
-
-### Passo a passo
-
-1. **Clone o repositório**
-```bash
-git clone https://github.com/Projetos-com-Pieri-Tech/controle-financeiro.git
-cd controle-financeiro/api
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   DRIVING       │    │      CORE       │    │     DRIVEN      │
+│   ADAPTERS      │    │    (DOMAIN)     │    │    ADAPTERS     │
+│                 │    │                 │    │                 │
+│ ┌─────────────┐ │    │ ┌─────────────┐ │    │ ┌─────────────┐ │
+│ │     WEB     │ │    │ │  ENTITIES   │ │    │ │ PERSISTENCE │ │
+│ │ Controllers │ │───▶│ │   ENUMS     │ │◀───│ │ Repositories│ │
+│ │   Routes    │ │    │ │VALUE OBJECTS│ │    │ │   Database  │ │
+│ │ Middleware  │ │    │ └─────────────┘ │    │ └─────────────┘ │
+│ └─────────────┘ │    │                 │    │                 │
+│                 │    │ ┌─────────────┐ │    │ ┌─────────────┐ │
+│ ┌─────────────┐ │    │ │    PORTS    │ │    │ │  EXTERNAL   │ │
+│ │     CLI     │ │    │ │(INTERFACES) │ │    │ │   APIs      │ │
+│ │  Commands   │ │───▶│ │ Repositories│ │◀───│ │   Email     │ │
+│ └─────────────┘ │    │ │  Services   │ │    │ │   Storage   │ │
+│                 │    │ │  Use Cases  │ │    │ └─────────────┘ │
+└─────────────────┘    │ └─────────────┘ │    └─────────────────┘
+                       │                 │
+                       │ ┌─────────────┐ │
+                       │ │APPLICATION  │ │
+                       │ │ Use Cases   │ │
+                       │ │  Services   │ │
+                       │ │    DTOs     │ │
+                       │ └─────────────┘ │
+                       └─────────────────┘
 ```
 
-2. **Instale as dependências**
+### 📁 Estrutura de Pastas
+
+```
+src/
+├── domain/                         # 🎯 NÚCLEO - Lógica de Negócio
+│   ├── entities/                   # Entidades do domínio
+│   │   ├── account.ts             # Conta financeira
+│   │   ├── category.ts            # Categoria de transação
+│   │   ├── role.ts                # Role de usuário
+│   │   ├── transaction.ts         # Transação financeira
+│   │   └── user.ts                # Usuário do sistema
+│   ├── enums/                     # Enumerações
+│   │   ├── AccountType.ts         # Tipos de conta
+│   │   └── TransactionType.ts     # Tipos de transação
+│   ├── value-objects/             # Value Objects
+│   └── ports/                     # Interfaces/Contratos
+│       ├── repositories/          # Output Ports
+│       ├── services/              # Output Ports
+│       └── usecases/              # Input Ports
+├── application/                    # 🔄 CASOS DE USO
+│   ├── usecases/                  # Implementação dos Use Cases
+│   │   ├── account/               # Casos de uso de contas
+│   │   ├── auth/                  # Casos de uso de autenticação
+│   │   ├── category/              # Casos de uso de categorias
+│   │   ├── transaction/           # Casos de uso de transações
+│   │   └── user/                  # Casos de uso de usuários
+│   ├── services/                  # Application Services
+│   │   ├── AccountService.ts      # Serviço de contas
+│   │   ├── AdminService.ts        # Serviço administrativo
+│   │   ├── AuthService.ts         # Serviço de autenticação
+│   │   ├── CategoryService.ts     # Serviço de categorias
+│   │   └── TransactionService.ts  # Serviço de transações
+│   └── dtos/                      # Data Transfer Objects
+└── infrastructure/                # 🔌 ADAPTADORES
+    ├── web/                       # Adaptador Web (Driving)
+    │   ├── controllers/           # Controllers REST
+    │   ├── middleware/            # Middlewares
+    │   ├── routes/                # Definição de rotas
+    │   └── dtos/                  # DTOs específicos da web
+    ├── persistence/               # Adaptador de Persistência (Driven)
+    │   ├── repositories/          # Implementações MySQL
+    │   ├── entities/              # Entidades do banco
+    │   └── mappers/               # Mappers Domain↔DB
+    ├── external/                  # Adaptadores Externos (Driven)
+    │   ├── apis/                  # APIs externas
+    │   └── email/                 # Serviços de email
+    ├── config/                    # Configurações e DI
+    │   ├── container.ts           # Dependency Injection
+    │   ├── database.ts            # Configuração MySQL
+    │   ├── server.ts              # Configuração Express
+    │   └── swagger.ts             # Documentação API
+    └── utils/                     # Utilitários
+```
+
+## 🛠️ Tecnologias e Ferramentas
+
+### **Core**
+- **Node.js 16+** - Runtime JavaScript
+- **TypeScript 5.0** - Tipagem estática
+- **Express.js** - Framework web minimalista
+
+### **Banco de Dados**
+- **MySQL 8.0** - Banco relacional principal
+- **mysql2** - Driver MySQL com suporte a Promises
+
+### **Segurança & Auth**
+- **JWT** - Autenticação stateless
+- **bcrypt** - Hash de senhas
+- **Helmet** - Headers de segurança
+- **CORS** - Cross-Origin Resource Sharing
+- **Rate Limiting** - Proteção contra ataques
+
+### **Validação & Documentação**
+- **Joi** - Validação de schemas
+- **Swagger/OpenAPI** - Documentação da API
+- **Morgan** - Logging de requisições
+
+### **Desenvolvimento**
+- **ESLint** - Linter de código
+- **Prettier** - Formatação de código
+- **Jest** - Framework de testes
+- **Nodemon** - Hot reload
+
+## 🚀 Instalação e Configuração
+
+### 1. **Pré-requisitos**
 ```bash
+# Versões mínimas
+node --version    # v16.0.0+
+npm --version     # v8.0.0+
+mysql --version   # v8.0.0+
+```
+
+### 2. **Clone e Instalação**
+```bash
+# Clone o repositório
+git clone https://github.com/Projetos-com-Pieri-Tech/controle-financeiro.git
+cd controle-financeiro/api
+
+# Instale as dependências
 npm install
 ```
 
-3. **Configure as variáveis de ambiente**
+### 3. **Configuração do Ambiente**
 ```bash
+# Copie o arquivo de exemplo
 cp .env.example .env
-# Edite o arquivo .env com suas configurações
+
+# Configure as variáveis de ambiente
+nano .env
 ```
 
-## 🔧 Variáveis de Ambiente
+#### **Variáveis de Ambiente (.env)**
+```env
+# 🗄️ Database
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+DB_NAME=controle_financeiro
 
-| Variável | Descrição | Valor Padrão | Obrigatório |
-|----------|-----------|--------------|-------------|
-| `PORT` | Porta do servidor | 3001 | Não |
-| `NODE_ENV` | Ambiente de execução | development | Não |
-| `DB_HOST` | Host do MySQL | localhost | Sim |
-| `DB_PORT` | Porta do MySQL | 3306 | Não |
-| `DB_NAME` | Nome do banco | controle_financeiro | Sim |
-| `DB_USER` | Usuário do banco | root | Sim |
-| `DB_PASSWORD` | Senha do banco | - | Sim |
-| `JWT_SECRET` | Chave secreta JWT | - | Sim |
+# 🔐 Authentication
+JWT_SECRET=seu_jwt_secret_super_seguro_aqui
+JWT_EXPIRES_IN=7d
 
-4. **Configure o banco de dados**
+# 🌐 Server
+PORT=3000
+NODE_ENV=development
 
-Crie o banco de dados:
-```sql
-CREATE DATABASE controle_financeiro;
+# 📊 API
+API_VERSION=v1
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
 ```
 
-5. **Inicie o servidor**
+### 4. **Configuração do Banco de Dados**
 ```bash
-# Desenvolvimento
+# Execute o script SQL para criar as tabelas
+mysql -u seu_usuario -p controle_financeiro < docs/database/schema-uuid.sql
+
+# Ou use o cliente MySQL
+mysql -u seu_usuario -p
+source docs/database/schema-uuid.sql
+```
+
+### 5. **Executar a Aplicação**
+```bash
+# Desenvolvimento (com hot reload)
 npm run dev
 
 # Produção
 npm run build
 npm start
+
+# Verificar compilação TypeScript
+npm run type-check
 ```
-
-## 🔧 Scripts Disponíveis
-
-- `npm run dev` - Inicia o servidor em modo desenvolvimento
-- `npm run build` - Compila o TypeScript
-- `npm start` - Inicia o servidor compilado
-- `npm test` - Executa os testes
-- `npm run test:watch` - Executa os testes em modo watch
-- `npm run test:coverage` - Executa os testes com cobertura
-- `npm run lint` - Verifica o código
-- `npm run lint:fix` - Corrige problemas de lint
 
 ## 📚 Documentação da API
 
-### Base URL
-```
-http://localhost:3001/api
-```
+### **Swagger UI**
+Acesse a documentação interativa em: `http://localhost:3000/api-docs`
 
-### Autenticação
+### **Principais Endpoints**
 
-A API usa JWT para autenticação. Inclua o token no header:
-```
-Authorization: Bearer <token>
-```
-
-### Endpoints
-
-#### 🔐 Autenticação
-
-##### Registro
-```http
-POST /auth/register
-```
-Body:
-```json
-{
-  "name": "João Silva",
-  "email": "joao@email.com",
-  "password": "senha123"
-}
+#### **🔐 Autenticação**
+```bash
+POST /api/auth/login          # Login do usuário
+POST /api/auth/register       # Registro de novo usuário
 ```
 
-##### Login
-```http
-POST /auth/login
-```
-Body:
-```json
-{
-  "email": "joao@email.com",
-  "password": "senha123"
-}
+#### **👥 Usuários**
+```bash
+GET    /api/users/profile     # Perfil do usuário logado
+PUT    /api/users/profile     # Atualizar perfil
 ```
 
-#### 💳 Contas
-
-##### Criar conta
-```http
-POST /accounts
-Authorization: Bearer <token>
-```
-Body:
-```json
-{
-  "name": "Conta Corrente",
-  "type": "conta_corrente",
-  "initialBalance": 1000.00
-}
+#### **💳 Contas**
+```bash
+GET    /api/accounts          # Listar contas do usuário
+POST   /api/accounts          # Criar nova conta
+GET    /api/accounts/:id      # Detalhes da conta
+PUT    /api/accounts/:id      # Atualizar conta
+DELETE /api/accounts/:id      # Deletar conta
+GET    /api/accounts/:id/balance # Saldo da conta
 ```
 
-Tipos válidos:
-- `conta_corrente`
-- `poupanca`
-- `cartao_credito`
-- `dinheiro`
-- `investimento`
-
-##### Listar contas
-```http
-GET /accounts
-Authorization: Bearer <token>
+#### **💰 Transações**
+```bash
+GET    /api/transactions      # Listar transações
+POST   /api/transactions      # Criar transação
+GET    /api/transactions/:id  # Detalhes da transação
+PUT    /api/transactions/:id  # Atualizar transação
+DELETE /api/transactions/:id  # Deletar transação
 ```
 
-##### Obter conta com saldo
-```http
-GET /accounts/:id
-Authorization: Bearer <token>
+#### **📂 Categorias**
+```bash
+GET    /api/categories        # Listar categorias
+POST   /api/categories        # Criar categoria
 ```
 
-##### Atualizar conta
-```http
-PUT /accounts/:id
-Authorization: Bearer <token>
-```
-Body:
-```json
-{
-  "name": "Nova Conta Corrente",
-  "type": "conta_corrente",
-  "initialBalance": 2000.00
-}
+#### **👑 Admin** *(Requer role admin)*
+```bash
+GET    /api/admin/dashboard   # Dashboard administrativo
+GET    /api/admin/users       # Listar todos os usuários
+GET    /api/admin/transactions # Listar todas as transações
 ```
 
-##### Deletar conta
-```http
-DELETE /accounts/:id
-Authorization: Bearer <token>
+## 📊 Scripts Disponíveis
+
+```bash
+# 🚀 Desenvolvimento
+npm run dev           # Inicia servidor com hot reload
+npm run build         # Compila TypeScript para JavaScript
+npm start             # Inicia servidor de produção
+
+# 🔍 Qualidade de Código
+npm run lint          # Executa ESLint
+npm run lint:fix      # Corrige problemas do ESLint automaticamente
+npm run format        # Formata código com Prettier
+npm run type-check    # Verifica tipos TypeScript
+
+# 🧪 Testes
+npm test              # Executa todos os testes
+npm run test:watch    # Testes em modo watch
+npm run test:coverage # Testes com relatório de cobertura
+
+# 🗄️ Banco de Dados
+npm run db:reset      # Reset completo do banco (desenvolvimento)
+npm run db:seed       # Popula banco com dados iniciais
 ```
 
-#### 💰 Transações
+## 🗃️ Banco de Dados
 
-##### Criar transação
-```http
-POST /transactions
-Authorization: Bearer <token>
-```
-Body:
-```json
-{
-  "accountId": 1,
-  "categoryId": 1,
-  "description": "Compra no supermercado",
-  "amount": 150.50,
-  "type": "despesa",
-  "transactionDate": "2024-01-15",
-  "isPaid": true
-}
+### **Estrutura Principal**
+```sql
+-- Estrutura com UUIDs para melhor performance e segurança
+roles (id, name, description)
+users (id, name, email, password_hash, role_id)
+accounts (id, user_id, name, type, initial_balance)
+categories (id, user_id, name)
+transactions (id, account_id, category_id, type, amount, description, is_paid)
 ```
 
-Tipos válidos:
-- `receita`
-- `despesa`
+### **Relacionamentos**
+- `users` ← `accounts` (1:N) - Um usuário pode ter várias contas
+- `accounts` ← `transactions` (1:N) - Uma conta pode ter várias transações
+- `categories` ← `transactions` (1:N) - Uma categoria pode ter várias transações
+- `roles` ← `users` (1:N) - Uma role pode ter vários usuários
 
-##### Listar transações
-```http
-GET /transactions
-Authorization: Bearer <token>
-```
-
-Query params opcionais:
-- `accountId` - Filtrar por conta
-- `categoryId` - Filtrar por categoria
-- `type` - Filtrar por tipo (receita/despesa)
-- `startDate` - Data inicial
-- `endDate` - Data final
-- `isPaid` - Filtrar por status de pagamento (true/false)
-
-Exemplo:
-```http
-GET /transactions?accountId=1&type=despesa&startDate=2024-01-01&endDate=2024-01-31
-```
-
-##### Obter transação
-```http
-GET /transactions/:id
-Authorization: Bearer <token>
-```
-
-##### Atualizar transação
-```http
-PUT /transactions/:id
-Authorization: Bearer <token>
-```
-Body (todos os campos são opcionais):
-```json
-{
-  "accountId": 2,
-  "categoryId": 3,
-  "description": "Nova descrição",
-  "amount": 200.00,
-  "type": "receita",
-  "transactionDate": "2024-01-20",
-  "isPaid": false
-}
-```
-
-##### Deletar transação
-```http
-DELETE /transactions/:id
-Authorization: Bearer <token>
-```
-
-#### 🏷️ Categorias
-
-##### Criar categoria
-```http
-POST /categories
-Authorization: Bearer <token>
-```
-Body:
-```json
-{
-  "name": "Entretenimento"
-}
-```
-
-##### Listar categorias
-```http
-GET /categories
-Authorization: Bearer <token>
-```
-Retorna categorias globais + categorias do usuário
-
-##### Atualizar categoria
-```http
-PUT /categories/:id
-Authorization: Bearer <token>
-```
-Body:
-```json
-{
-  "name": "Novo nome"
-}
-```
-
-##### Deletar categoria
-```http
-DELETE /categories/:id
-Authorization: Bearer <token>
-```
-
-### Respostas de Erro
-
-A API retorna erros no formato:
-```json
-{
-  "error": "Mensagem de erro"
-}
-```
-
-Códigos de status HTTP comuns:
-- `200` - Sucesso
-- `201` - Criado com sucesso
-- `204` - Deletado com sucesso
-- `400` - Requisição inválida
-- `401` - Não autorizado
-- `404` - Não encontrado
-- `500` - Erro interno do servidor
+### **Dados Iniciais (Seeds)**
+- **Roles**: `admin`, `user`
+- **Categorias Globais**: Alimentação, Transporte, Saúde, Educação, etc.
 
 ## 🔒 Segurança
 
-- Senhas são hasheadas com bcrypt
-- Autenticação via JWT
-- Rate limiting para prevenir abuso
-- Helmet para headers de segurança
-- Soft delete para manter histórico
-- Validação de entrada de dados
-
-## 📊 Modelo de Dados
-
-### Tabelas
-
-- **users** - Usuários do sistema
-- **roles** - Papéis de usuário (admin, user)
-- **accounts** - Contas financeiras
-- **transactions** - Transações financeiras
-- **categories** - Categorias de transações
-
-### Relacionamentos
-
-- Um usuário possui múltiplas contas
-- Um usuário possui múltiplas transações
-- Uma conta possui múltiplas transações
-- Uma transação pertence a uma categoria
-- Categorias podem ser globais (user_id = NULL) ou do usuário
-
-## 📊 Qualidade do Código
-
-### Code Quality Tools
-- **ESLint** - Análise estática de código
-- **TypeScript** - Tipagem estática
-- **Jest** - Framework de testes
-- **Prettier** - Formatação de código (recomendado)
-
-### Métricas de Qualidade
-- **Arquitetura**: ⭐⭐⭐⭐⭐ Hexagonal/Clean Architecture
-- **Tipagem**: ⭐⭐⭐⭐⭐ TypeScript strict mode
-- **Testes**: ⭐⭐⭐⚪⚪ Estrutura pronta, implementação pendente
-- **Documentação**: ⭐⭐⭐⭐⭐ README completo
-- **Segurança**: ⭐⭐⭐⭐⚪ JWT, bcrypt, helmet
-
-## 🧪 Testes
-
-```bash
-# Executar testes
-npm test
-
-# Testes com cobertura
-npm run test:coverage
-
-# Testes em modo watch
-npm run test:watch
-```
-
-## � Performance e Monitoramento
-
-### Performance
-- **Rate Limiting** - Proteção contra spam e DDoS
-- **Connection Pooling** - Pool de conexões MySQL
-- **Middleware otimizado** - Express.js com middlewares essenciais
-- **Compressão** - Resposta gzip (recomendado implementar)
-
-### Monitoramento
-- **Morgan** - Logging HTTP requests
-- **Health Check** - Endpoint de saúde da aplicação
-- **Error Handling** - Tratamento centralizado de erros
-
-### Próximos Passos para Performance
-- [ ] Implementar cache Redis
-- [ ] Adicionar métricas Prometheus
-- [ ] Configurar APM (Application Performance Monitoring)
-- [ ] Implementar circuit breaker
-- [ ] Adicionar rate limiting por usuário
-
-## �🗺️ Roadmap
-
-- [ ] Implementar testes unitários
-- [ ] Adicionar testes de integração
-- [ ] Documentação com Swagger/OpenAPI
-- [ ] Sistema de notificações
-- [ ] Relatórios financeiros
-- [ ] Backup automático
-- [ ] API de importação de extratos
-- [ ] Dashboard em tempo real
-- [ ] Suporte a múltiplas moedas
-- [ ] Integração com bancos
-
-## 📝 Estrutura do Projeto
-
-```
-api/
-├── src/
-│   ├── domain/           # Camada de domínio
-│   │   ├── entities/     # Entidades do domínio
-│   │   ├── ports/        # Interfaces (contratos)
-│   │   └── usecases/     # Casos de uso
-│   ├── application/      # Camada de aplicação
-│   │   └── services/     # Serviços da aplicação
-│   └── infrastructure/   # Camada de infraestrutura
-│       ├── adapters/     # Adaptadores
-│       │   ├── controllers/
-│       │   └── repositories/
-│       ├── config/       # Configurações
-│       ├── middleware/   # Middlewares
-│       └── routes/       # Rotas
-├── tests/               # Testes
-├── .env.example         # Exemplo de variáveis de ambiente
-├── package.json         # Dependências
-├── tsconfig.json        # Configuração TypeScript
-└── README.md           # Este arquivo
-```
+### **Implementado**
+- ✅ **Autenticação JWT** - Tokens seguros com expiração
+- ✅ **Hash de Senhas** - bcrypt com salt rounds
+- ✅ **Rate Limiting** - Proteção contra força bruta
+- ✅ **CORS** - Configuração de origins permitidas
+- ✅ **Helmet** - Headers de segurança
+- ✅ **Validação de Input** - Sanitização de dados
+- ✅ **UUIDs** - IDs não sequenciais
+- ✅ **Middleware de Autorização** - Controle por roles
 
 ## 👥 Contribuindo
 
-### Pré-requisitos para Desenvolvimento
-- Node.js v16+
-- MySQL v8.0+
-- Git
+### **Padrões de Desenvolvimento**
 
-### Padrões de Código
-- Use TypeScript
-- Siga o ESLint configurado
-- Escreva testes para novas funcionalidades
-- Mantenha cobertura de testes acima de 80%
-- Siga os princípios SOLID
-- Mantenha a arquitetura hexagonal
+#### **Arquitetura**
+- ✅ Siga rigorosamente a **Arquitetura Hexagonal**
+- ✅ Domain não deve conhecer Infrastructure
+- ✅ Use **Dependency Injection** no container
+- ✅ Implemente **interfaces** antes de concretações
 
-### Processo de Contribuição
-1. Faça um fork do projeto
-2. Crie uma branch: `git checkout -b feature/minha-feature`
-3. Faça suas alterações seguindo os padrões
-4. Execute os testes: `npm test`
-5. Execute o linter: `npm run lint`
-6. Commit: `git commit -m 'feat: adiciona nova feature'`
-7. Push: `git push origin feature/minha-feature`
-8. Abra um Pull Request
+#### **Commits**
+```bash
+# Padrão Conventional Commits
+feat: add account balance calculation
+fix: resolve JWT token expiration issue
+docs: update API documentation
+refactor: improve error handling middleware
+test: add unit tests for transaction service
+```
 
-### Convenções de Commit
-- `feat:` - Nova funcionalidade
-- `fix:` - Correção de bug
-- `docs:` - Documentação
-- `style:` - Formatação
-- `refactor:` - Refatoração
-- `test:` - Testes
-- `chore:` - Tarefas de build/configuração
+### **Processo de Contribuição**
+1. **Fork** o repositório
+2. **Clone** seu fork localmente
+3. **Crie branch** descritiva: `git checkout -b feat/nova-funcionalidade`
+4. **Desenvolva** seguindo os padrões
+5. **Teste** localmente: `npm test`
+6. **Commit** com mensagem clara
+7. **Push** para seu fork
+8. **Abra Pull Request** com descrição detalhada
+
+## 📞 Suporte e Contato
+
+### **Links Úteis**
+- 📖 **Documentação**: [Swagger UI](http://localhost:3000/api-docs)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/Projetos-com-Pieri-Tech/controle-financeiro/issues)
+
+### **Equipe**
+- **Pieri Tech** - Arquitetura e Desenvolvimento
+
+### **Contato**
+- 🌐 **Website**: [Pieri Tech](https://github.com/Projetos-com-Pieri-Tech)
+- 🐙 **GitHub**: [@Projetos-com-Pieri-Tech](https://github.com/Projetos-com-Pieri-Tech)
 
 ## 📄 Licença
 
-Este projeto está sob a licença ISC.
-
-## 📧 Contato
-
-Pieri Tech - [GitHub](https://github.com/Projetos-com-Pieri-Tech)
-
-Project Link: [https://github.com/Projetos-com-Pieri-Tech/controle-financeiro](https://github.com/Projetos-com-Pieri-Tech/controle-financeiro)
+Este projeto está licenciado sob a **Licença ISC** - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
 ---
 
-**Desenvolvido com ❤️ seguindo os princípios da Arquitetura Hexagonal**
+<div align="center">
+
+**🏗️ Desenvolvido com ❤️ seguindo os princípios da Arquitetura Hexagonal**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Pieri%20Tech-blue?logo=github)](https://github.com/Projetos-com-Pieri-Tech)
+[![Architecture](https://img.shields.io/badge/Architecture-Hexagonal-purple)](https://alistair.cockburn.us/hexagonal-architecture/)
+[![Clean Code](https://img.shields.io/badge/Code-Clean%20Architecture-green)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
+</div>
